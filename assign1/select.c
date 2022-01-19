@@ -27,7 +27,7 @@ int		main		(int	argc,
 
   //  YOUR CODE HERE
 	if (argc > 1) {
-		passThruLen = *argv[1];
+		passThruLen = strtol(argv[1], &cPtr, 10);
 		if (passThruLen < 0) {
 			fprintf(stderr,"Number format error\n");
 			exit(EXIT_FAILURE);
@@ -41,13 +41,26 @@ int		main		(int	argc,
 		exit(EXIT_FAILURE);
 	}
 
+	// fgets(line, LINE_LEN, stdin);
+
 	int i = 0;
-		while (scanf("%c", line[i]) != '\n')  {
-			i++;
+	int start = 0;
+	int columns = 0;
+	int iColumn;
+
+	while (scanf("%c", &line[i]) != EOF) {
+		if (line[i] == '\n')  {
+			columns = i-start;
+			if (columns == passThruLen) {
+				for (iColumn = start; iColumn < i; iColumn++) {
+					printf("%c", line[iColumn]);
+				}
+				printf("\n");
+			}
+			start = i+1;	// set start to index after discovered "new line"
 		}
-		if (i == passThruLen) {
-			printf("%s", line);
-		}
+		i++;
+	}
 
   return(EXIT_SUCCESS);
 }
