@@ -37,7 +37,6 @@ int		main		(int		argc,
 
 	if (argc > 1) {
 		passThruLen = strtol(argv[1], &cPtr, 10);
-
 		if (passThruLen < 0) {
 			fprintf(stderr,"Number format error\n");
 			exit(EXIT_FAILURE);
@@ -62,79 +61,90 @@ int		main		(int		argc,
 
 	if (lsChild == 0) {
 		dup2(lsToSort[1], STDOUT_FILENO);
+		printf("made it\r");
 		close(lsToSort[0]);
 		close(lsToSort[1]);
-		printf("lschild");
+
 		execl("ls", "ls", NULL);
+		exit(EXIT_FAILURE);
 
 	} else if (lsChild > 0) {
 		close(lsToSort[1]);
-		printf("lsparent");
-	} else {
-		exit(EXIT_FAILURE);
 
-	}
-  //  sort
-  //
-  int	sortToSelect[2];
-  pid_t	sortChild;
-
-  //  YOUR CODE HERE
-	pipe(sortToSelect);
-	sortChild = fork();
-
-	if (sortChild == 0) {
-		dup2(sortToSelect[1], STDOUT_FILENO);
-		close(sortToSelect[0]);
-		close(sortToSelect[1]);
-
-		dup2(lsToSort[0], STDIN_FILENO);
-		close(lsToSort[0]);
-		printf("sortchild");
-		execl("sort", "sort", "-r", NULL);
-
-	} else if (sortChild > 0){
-		close(lsToSort[0]);
-		close(sortToSelect[1]);
-		printf("sortparent");
-	} else {
-		exit(EXIT_FAILURE);
-
-	}
-
-  //  select
-  int	selectToParent[2];
-  pid_t	selectChild;
-
-  //  YOUR CODE HERE
-	pipe(selectToParent);
-	selectChild = fork();
-
-	if (selectChild == 0) {
-		close(selectToParent[0]);
-		close(selectToParent[1]);
-		printf("selectchild");
-		execl("select", "select", argv[1], NULL);
-
-	} else if (selectChild > 0) {
-	  //  Receive and print output:
-	  char		line[LINE_LEN];
-	  int		numBytes;
-		printf("selectparent");
-	  while  ( (numBytes=read(selectToParent[STDIN_FILENO],line,LINE_LEN-1)) > 0 )
-	  {
-	    line[numBytes]	= '\0';
-	    printf("%s",line);
-	  }
-
-	  close(selectToParent[STDIN_FILENO]);
+	  //  sort
+	  //
+	  int	sortToSelect[2];
+	  pid_t	sortChild;
 
 	  //  YOUR CODE HERE
-		wait(NULL);
+		pipe(sortToSelect);
+		sortChild = fork();
 
+		if (sortChild == 0) {
+			dup2(sortToSelect[1], STDOUT_FILENO);
+			printf("made it\r");
+			close(sortToSelect[0]);
+			close(sortToSelect[1]);
+
+			dup2(lsToSort[0], STDIN_FILENO);
+			close(lsToSort[0]);
+
+			execl("sort", "sort", "-r", NULL);
+			exit(EXIT_FAILURE);
+
+		} else if (sortChild > 0) {
+			close(lsToSort[0]);
+			close(sortToSelect[1]);
+
+		  //  select
+		  int	selectToParent[2];
+		  pid_t	selectChild;
+
+		  //  YOUR CODE HERE
+			pipe(selectToParent);
+			selectChild = fork();
+
+			if (selectChild == 0) {
+				close(selectToParent[0]);
+				close(selectToParent[1]);
+				close(sortToSelect[0]);
+
+				execl("select", "select", argv[1], NULL);
+				exit(EXIT_FAILURE);
+
+			} else if (selectChild > 0) {
+				close(selectToParent[1]);
+				close(sortToSelect[0]);
+
+			  //  Receive and print output:
+			  char		line[LINE_LEN];
+			  int		numBytes;
+
+			  while  ( (numBytes=read(selectToParent[STDIN_FILENO],line,LINE_LEN-1)) > 0 )
+			  {
+			    line[numBytes]	= '\0';
+			    printf("%s",line);
+			  }
+
+			  close(selectToParent[STDIN_FILENO]);
+
+			  //  YOUR CODE HERE
+				waitpid(lsChild, NULL, 0);
+				waitpid(sortChild, NULL, 0);
+				waitpid(selectChild, NULL, 0);
+
+			} else {
+				exit(EXIT_FAILURE);
+
+			}
+		} else {
+			exit(EXIT_FAILURE);
+
+		}
 	} else {
 		exit(EXIT_FAILURE);
 
 	}
   return(EXIT_SUCCESS);
+
 }
