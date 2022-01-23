@@ -64,19 +64,14 @@ int		main		(int		argc,
 	if (lsChild == 0)
 	{
 		close(lsToSort[0]);
-		printf("ls child  hey\n");
 		dup2(lsToSort[1], STDOUT_FILENO);
 		close(lsToSort[1]);
-		printf("first dup...\n");
 
-		printf("ls child bye\n");
 		execl("/usr/bin/ls", "ls", NULL);
 		exit(EXIT_FAILURE);
-
 	}
 
 	close(lsToSort[1]);
-	printf("ls parent hey\n");
   //  sort
   //
   int	sortToSelect[2];
@@ -91,23 +86,17 @@ int		main		(int		argc,
 	if (sortChild == 0)
 	{
 		close(sortToSelect[0]);
-		printf("sort child hey\n");
 		dup2(sortToSelect[1], STDOUT_FILENO);
 		close(sortToSelect[1]);
-		printf("second dup...\n");
 
 		dup2(lsToSort[0], STDIN_FILENO);
 		close(lsToSort[0]);
-		printf("third dup...\n");
 
-		printf("sort child bye\n");
-		execl("sort", "sort", "-r", NULL);
+		execl("/usr/bin/sort", "sort", "-r", NULL);
 		exit(EXIT_FAILURE);
 	}
 
-	printf("sort parent hey\n");
 	close(lsToSort[0]);
-	close(sortToSelect[0]); // maybe
 	close(sortToSelect[1]);
 
   //  select
@@ -122,17 +111,20 @@ int		main		(int		argc,
 
 	if (selectChild == 0)
 	{
-		printf("select child hey\n");
 		close(selectToParent[0]);
+		dup2(selectToParent[1], STDOUT_FILENO);
 		close(selectToParent[1]);
 
-		printf("select child bye\n");
+		dup2(sortToSelect[0], STDIN_FILENO);
+		close(sortToSelect[0]);
+
 		execl("select", "select", argv[1], NULL);
 		exit(EXIT_FAILURE);
 	}
 
 	close(selectToParent[1]);
-	printf("select parent hey\n");
+	close(sortToSelect[0]);
+
   //  Receive and print output:
   char		line[LINE_LEN];
   int		numBytes;
@@ -146,13 +138,9 @@ int		main		(int		argc,
   close(selectToParent[STDIN_FILENO]);
 
   //  YOUR CODE HERE
-	printf("waiting...\n");
 	wait(NULL);
-	printf("waiting...\n");
 	wait(NULL);
-	printf("waiting...\n");
 	wait(NULL);
-	printf("3 parents bye...\n");
 	return(EXIT_SUCCESS);
 
 }
