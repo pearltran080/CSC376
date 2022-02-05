@@ -1,8 +1,10 @@
 import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 
 public class GreekInvertingDownloader {
   public static void main (String[] args) {
+    if (args.length == 0) { System.out.println("Usage:  java GreekInvertingDownloader (URL)"); }
     if (args.length > 0) {
       try {
         URL url = new URL(args[0]);
@@ -25,21 +27,33 @@ public class GreekInvertingDownloader {
     try {
       in = url.openStream();
       in = new BufferedInputStream(in);
-      Reader r = new InputStreamReader(in);
+      Reader r = new InputStreamReader(in, StandardCharsets.UTF_8);
       int c;
 
       File file = new File("out.html");
-      FileOutputStream output = new FileOutputStream(file);
-      file.createNewFile();
+      OutputStreamWriter output = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
 
+      char single;
+      char convert;
       while ((c = r.read()) != -1) {
-        output.write((char)c);
+        single = (char)c;
+        if ( single >= '\u0391' && single <= '\u03C9' ) {
+          convert = invertGreek(single);
+          output.write(convert);
+        }
+        else { output.write(single); }
       }
     }
+
     catch (IOException e) { System.err.println(e); }
     finally {
       try { in.close(); }
       catch (IOException e) {}
     }
+  }
+
+  public static char invertGreek (char c) {
+    if (c >= '\u0391' && c <= '\u03A9') return Character.toLowerCase(c);
+    return Character.toUpperCase(c);
   }
 }
