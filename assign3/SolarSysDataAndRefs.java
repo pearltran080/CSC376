@@ -15,6 +15,7 @@ class SolarSysDataAndRefs {
    HashMap<String, String> idToText = new HashMap<String, String>();
 
    try {
+
      doc = Jsoup.connect(urlText).get();
 
      // id-to-text map
@@ -30,28 +31,59 @@ class SolarSysDataAndRefs {
 
      // table elements
      Elements tables = doc.select("table");
+     Element thTable = doc.select("table").get(1);
+     Element lastTable = doc.select("table").get(tables.size()-1);
      Elements stuff, a;
-     Element box;
      String href;
 
-     for (Element table : tables) {
-       stuff = table.select("th");
-       a = stuff.select("a");
-       for ( int i = 22; i < a.size(); i++ ){
-         box = a.get(i);
-         href = (a.get(i).attr("href")).substring(1);
-         if (idToText.get(href) == null) System.out.println(stuff.get(i).text());
-         else System.out.println(stuff.get(i).text() + " Ref" + idToText.get(href));
+     stuff = thTable.select("th");
+     for (Element s : stuff) {
+       a = s.select("a");
+       if (a.size() == 0) System.out.println(s.text());
+       else {
+         for (Element aa : a) {
+           href = aa.attr("href").substring(1);
+           if (idToText.get(href) != null) System.out.println(s.text() + " Ref[" + idToText.get(href) + "]");
+           else System.out.println(s.text());
+         }
        }
      }
 
+     // for (Element table : tables) {
+     //   stuff = table.select("td");
+     //   for (Element s : stuff) {
+     //     a = s.select("a");
+     //     if (a.size() == 0) System.out.println(s.text());
+     //
+     //     else {
+     //       for (Element aa : a) {
+     //         href = aa.attr("href");
+     //         if (href.length() > 0 && href.charAt(0) == '#') {  // exists ref in map
+     //           href = href.substring(1);
+     //           System.out.println(s.text() + " Ref[" + idToText.get(href) + "]");
+     //         }
+     //         else System.out.println(s.text() + " Ref[" + href + "]");  // refs that links to other Wiki pages
+     //       }
+     //     }
+     //   }
+     // }
+     Elements li;
      for (Element table : tables) {
        stuff = table.select("td");
-       a = stuff.select("a");
-       for ( int i = 0; i < a.size(); i++ ){
-         box = a.get(i);
-         href = (a.get(i).attr("href")).substring(1);
-         System.out.println(stuff.get(i).text() + " Ref" + idToText.get(href));
+       for (Element s : stuff) {
+         a = s.select("a");
+         if (a.size() == 0) System.out.println(s.text());
+
+         else {
+           for (Element aa : a) {
+             href = aa.attr("href");
+             if (href.length() > 0 && href.charAt(0) == '#') {  // exists ref in map
+               href = href.substring(1);
+               System.out.println(s.text() + " Ref[" + idToText.get(href) + "]");
+             }
+             else System.out.println(s.text() + " Ref[" + href + "]");  // refs that links to other Wiki pages
+           }
+         }
        }
      }
 
@@ -59,6 +91,5 @@ class SolarSysDataAndRefs {
    catch (IOException error) {
      System.err.println("Caught " + error);
    }
-
  }
 }
