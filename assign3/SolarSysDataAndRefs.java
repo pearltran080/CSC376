@@ -12,40 +12,49 @@ class SolarSysDataAndRefs {
 
    String urlText = "https://en.wikipedia.org/wiki/List_of_Solar_System_objects_by_size#References";
    Document doc;
-   Element content;
-   Elements links;
+   HashMap<String, String> idToText = new HashMap<String, String>();
+
    try {
      doc = Jsoup.connect(urlText).get();
 
+     // id-to-text map
+     Element references = doc.select("ol").get(2);
+     Elements lines = references.getElementsByTag("li");
+     String id, text;
+
+     for (Element l : lines) {
+       id = l.attr("id");
+       text = l.text();
+       idToText.put(id, text);
+     }
+
+     // table elements
      Elements tables = doc.select("table");
-     Elements stuff;
+     Elements stuff, a;
+     Element box;
+     String href;
 
      for (Element table : tables) {
        stuff = table.select("th");
-       for ( int i = 22; i < stuff.size(); i++ ){
-         Element box = stuff.get(i);
-         System.out.println(box.text());
+       a = stuff.select("a");
+       for ( int i = 22; i < a.size(); i++ ){
+         box = a.get(i);
+         href = (a.get(i).attr("href")).substring(1);
+         if (idToText.get(href) == null) System.out.println(stuff.get(i).text());
+         else System.out.println(stuff.get(i).text() + " Ref" + idToText.get(href));
        }
      }
 
      for (Element table : tables) {
        stuff = table.select("td");
-       for ( int i = 0; i < stuff.size(); i++ ){
-         Element box = stuff.get(i);
-         System.out.println(box.text());
+       a = stuff.select("a");
+       for ( int i = 0; i < a.size(); i++ ){
+         box = a.get(i);
+         href = (a.get(i).attr("href")).substring(1);
+         System.out.println(stuff.get(i).text() + " Ref" + idToText.get(href));
        }
      }
 
-////////////////////////////////////////////////////////////////////////
-     // content = doc.getElementById("content");
-     // links = (content == null)
-     // ? doc.getElementsByTag("a")
-     // : content.getElementsByTag("a");
-     // for (Element link : links) {
-     // String href = link.attr("href");
-     // String text = link.text();
-     // System.out.println(text + " => " + href);
-     // }
    }
    catch (IOException error) {
      System.err.println("Caught " + error);
