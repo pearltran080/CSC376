@@ -30,30 +30,26 @@ class SolarSysDataAndRefs {
      }
 
      // table elements
-     Elements tables = doc.select("table");
-     Element thTable = doc.select("table").get(1);
      Elements stuff, a;
      String href;
 
-     stuff = thTable.select("th");
-     for (Element s : stuff) {
-       a = s.select("a");
-       if (a.size() == 0) System.out.println(s.text());
-       else {
-         for (Element aa : a) {
-           href = aa.attr("href").substring(1);
-           if (idToText.get(href) != null) System.out.println(s.text() + " Ref[" + idToText.get(href) + "]");
-           else System.out.println(s.text());
-         }
-       }
-     }
-
-     for (Element table : tables) {
-       stuff = table.select("td");
+       stuff = doc.select("th");
        for (Element s : stuff) {
          a = s.select("a");
          if (a.size() == 0) System.out.println(s.text());
+         else {
+           for (Element aa : a) {
+             href = aa.attr("href").substring(1);
+             if (idToText.get(href) != null) System.out.println(s.text() + " Ref[" + idToText.get(href) + "]");
+             else System.out.println(s.text());
+           }
+         }
+       }
 
+       stuff = doc.select("td");
+       for (Element s : stuff) {
+         a = s.select("a");
+         if (a.size() == 0) System.out.println(s.text());
          else {
            for (Element aa : a) {
              href = aa.attr("href");
@@ -65,7 +61,6 @@ class SolarSysDataAndRefs {
            }
          }
        }
-     }
 
    }
    catch (IOException error) {
