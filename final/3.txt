@@ -1,0 +1,157 @@
+<!doctype html>
+<html> 
+ <head> 
+  <meta charset="utf-8"> 
+  <title>theBoat in (not yet named)</title> 
+  <link rel="stylesheet" href="/CSS/index.css"> 
+  <style>
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+ 
+    /* Position the tooltip text - see examples below! */
+    position: absolute;
+    z-index: 1;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.kbMenu
+      {
+	height: 98%;
+	width: 20%;
+	border: 2px solid green;
+	border-radius: 5px;
+	float: left;
+      }
+
+      .banner
+      {
+	height: 98%;
+	width: 77%;
+	border: 2px solid green;
+	border-radius: 5px;
+	float: left;
+      }
+
+      .properties
+      {
+	height: 95%;
+	width: 65%;
+	border: 2px solid green;
+	border-radius: 5px;
+	float: left;
+      text-align: center;
+      font-size: 100%;
+      }
+
+      .image
+      {
+	height: 95%;
+	width: 33%;
+	border: 2px solid green;
+	border-radius: 5px;
+	float: left;
+      text-align: center;
+      font-size: 150%;
+      }
+
+      .forIcon
+      {
+      margin: 0px;
+      padding: 0px;
+      color: #000;
+      }
+
+      .menu3Button
+      {
+	height: 90%;
+	width: 32%;
+	float: left;
+        text-align: center;
+        font-size: 100%;
+      }
+
+</style> 
+ </head> 
+ <body> 
+  <div class="topBanner">
+    Applied Philosophy of Science presents:
+   <br> 
+   <img src="/Media/ScienceOMatic_Logo3_small.jpg" width="450" height="100"> 
+   <h3></h3> 
+  </div> 
+  <div class="menu"> 
+   <div class="menu3Button"></div> 
+   <div class="menu3Button">
+    theBoat in (not yet named)
+   </div> 
+   <div class="menu3Button">
+    <div class="tooltip">
+     <a href="/kb/1477/noSaveClose"><img src="/Media/closeIcon.jpg" height="50" width="50"><span class="tooltiptext">Close Knowledge Base</span></a>
+    </div>
+   </div> 
+  </div> 
+  <div class="main"> 
+   <div class="kbMenu"> 
+    <div class="forIcon"> <a href="/kb/1477"> <img src="/Media/home_icon.png" width="192" height="192"> </a> 
+    </div> 
+    <div class="forIcon"> <a href="/kb/1477/activities.html"> <img src="/Media/activity-icon-2.png" width="192" height="192"> </a> 
+    </div> 
+    <div class="forIcon"> <a href="/kbCompute.swt"> <img src="/Media/calculator_icon.png" width="192" height="192"> </a> 
+    </div> 
+   </div> 
+   <div class="banner"> 
+    <div class="properties"> 
+     <table border="1">
+      <tbody>
+       <tr>
+        <th>Attribute</th>
+        <th>Property</th>
+       </tr>
+       <tr>
+        <td>instanceOf</td>
+        <td>LiquidSurfaceCraft</td>
+       </tr>
+       <tr>
+        <td>parseLocationStrA</td>
+        <td>column 1 of line 54 of /srv/AppPhiloSci/SOM/Ver9A/Persist/Public/StdLocal0/Knowledge/buoyancy.som9</td>
+       </tr>
+       <tr>
+        <td>mayBeDestroyedA</td>
+        <td>false</td>
+       </tr>
+       <tr>
+        <td>isImmutableA</td>
+        <td>false</td>
+       </tr>
+       <tr>
+        <td>descriptionA</td>
+        <td>The boat floats some number of pennies.</td>
+       </tr>
+      </tbody>
+     </table> 
+    </div> 
+    <div class="image"> 
+     <img style="vertical-align:middle" src="/Media/genericKbIcon.png" width="192" height="192"> 
+    </div> 
+   </div> 
+  </div>  
+ </body>
+</html>

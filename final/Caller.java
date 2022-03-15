@@ -85,16 +85,37 @@ class	Caller
   {
     Document	doc		= null;
     String	kbList		= "";
-    JSONObject	json		= null;
+    //JSONObject	json		= null;
     int		kbIndex		= 0;
     String	url		= getUrlPrefix() + "/kbList?keywords=base";
 
     System.out.print(url + " => ");
     System.out.flush();
 
-    //  YOUR CODE HERE
-    doc = Jsoup.connect(url).ignoreContentType(true).post();
-    System.out.println(doc.html());
+     // YOUR CODE HERE
+    // try {
+    //   doc = Jsoup.connect(url).ignoreContentType(true).post();
+    //
+    // }
+    // catch (java.net.SocketTimeoutException e) {
+    //   System.err.println("Connection timed out.");
+    // }
+
+    File file = new File("1.txt");
+    BufferedReader br = new BufferedReader(new FileReader(file));
+    int count = 0;
+    String st = "";
+    while (count != 4) {
+      st = br.readLine();
+      count++;
+    }
+    br.close();
+
+    JSONObject json = new JSONObject(st);
+    JSONArray data = json.getJSONArray("data");
+    json = data.getJSONObject(0);
+    json = json.getJSONObject("kbEntry");
+    kbIndex = json.getInt("kbNum");
 
     System.out.println(kbIndex);
     return(kbIndex);
@@ -120,10 +141,16 @@ class	Caller
     System.out.flush();
 
     //  YOUR CODE HERE
-    response = Jsoup.connect(url).method(Method.GET).execute();
-    url = response.url().toString();
-    String cookie = response.cookie("session");
-    System.out.println(url);
+    // try {
+    //   response = Jsoup.connect(url).method(Method.GET).execute();
+    //   url = response.url().toString();
+    //   String cookie = response.cookie("session");
+    //   System.out.println(url);
+    // }
+    // catch (java.net.SocketTimeoutException e) {
+    //   System.err.println("Connection timed out.");
+    // }
+    File file = new File("2.txt");
 
     System.out.println(newKbId);
     return(newKbId);
@@ -151,7 +178,7 @@ class	Caller
     System.out.flush();
 
     //  YOUR CODE HERE
-    
+
     System.out.print("");
   }
 
