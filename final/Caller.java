@@ -93,6 +93,8 @@ class	Caller
     System.out.flush();
 
     //  YOUR CODE HERE
+    doc = Jsoup.connect(url).ignoreContentType(true).post();
+    System.out.println(doc.html());
 
     System.out.println(kbIndex);
     return(kbIndex);
@@ -112,12 +114,16 @@ class	Caller
   {
     Response	response	= null;
     String	url		= getUrlPrefix() + "/kb/" + oldKbId;
-    int		newKbId;
+    int		newKbId = 0; // TEMP
 
     System.out.print(url + " => ");
     System.out.flush();
 
     //  YOUR CODE HERE
+    response = Jsoup.connect(url).method(Method.GET).execute();
+    url = response.url().toString();
+    String cookie = response.cookie("session");
+    System.out.println(url);
 
     System.out.println(newKbId);
     return(newKbId);
@@ -145,7 +151,7 @@ class	Caller
     System.out.flush();
 
     //  YOUR CODE HERE
-
+    
     System.out.print("");
   }
 
