@@ -104,14 +104,13 @@ class	Caller
     File file = new File("1.txt");
     BufferedReader br = new BufferedReader(new FileReader(file));
     int count = 0;
-    String st = "";
     while (count != 4) {
-      st = br.readLine();
+      kbList = br.readLine();
       count++;
     }
     br.close();
 
-    JSONObject json = new JSONObject(st);
+    JSONObject json = new JSONObject(kbList);
     JSONArray data = json.getJSONArray("data");
     json = data.getJSONObject(0);
     json = json.getJSONObject("kbEntry");
@@ -145,12 +144,17 @@ class	Caller
     //   response = Jsoup.connect(url).method(Method.GET).execute();
     //   url = response.url().toString();
     //   String cookie = response.cookie("session");
-    //   System.out.println(url);
     // }
     // catch (java.net.SocketTimeoutException e) {
     //   System.err.println("Connection timed out.");
     // }
+
     File file = new File("2.txt");
+    BufferedReader br = new BufferedReader(new FileReader(file));
+    url = br.readLine();
+    br.close();
+
+    newKbId = Integer.parseInt(url.substring(33));
 
     System.out.println(newKbId);
     return(newKbId);
