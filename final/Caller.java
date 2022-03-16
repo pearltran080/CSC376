@@ -95,26 +95,24 @@ class	Caller
     // YOUR CODE HERE
     // try {
     //   doc = Jsoup.connect(url).ignoreContentType(true).post();
-    //
+    //   doc = Jsoup.parse(doc, "UTF-8", url);
+      File file = new File("1.txt");
+      doc = Jsoup.parse(file, "UTF-8", url);
+
+      Elements body = doc.select("body");
+      for (Element b : body) {
+        kbList += b.text();
+      }
+
+      json = new JSONObject(kbList);
+      JSONArray data = json.getJSONArray("data");
+      json = data.getJSONObject(0);
+      json = json.getJSONObject("kbEntry");
+      kbIndex = json.getInt("kbNum");
     // }
     // catch (java.net.SocketTimeoutException e) {
     //   System.err.println("Connection timed out.");
     // }
-
-    File file = new File("1.txt");
-    BufferedReader br = new BufferedReader(new FileReader(file));
-    int count = 0;
-    while (count != 4) {
-      kbList = br.readLine();
-      count++;
-    }
-    br.close();
-
-    json = new JSONObject(kbList);
-    JSONArray data = json.getJSONArray("data");
-    json = data.getJSONObject(0);
-    json = json.getJSONObject("kbEntry");
-    kbIndex = json.getInt("kbNum");
 
     System.out.println(kbIndex);
     return(kbIndex);
@@ -226,13 +224,14 @@ class	Caller
     String	url		= getUrlPrefix()	+
 				  "/kb/"		+
 				  kbId			+
-				  "/noSaveClose?name=YOUR_NAME_HERE";
+				  "/noSaveClose?name=PearleenTran";
     //  PUT YOUR NAME ON THE PREVIOUS LINE!
 
     System.out.print(url + " => ");
     System.out.flush();
 
     //  YOUR CODE HERE
+    // response = Jsoup.connect(url).cookie("session", getSessionCookie()).method(Method.GET).execute();
 
     System.out.println(response.statusMessage().toString());
   }
