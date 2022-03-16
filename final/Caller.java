@@ -85,14 +85,14 @@ class	Caller
   {
     Document	doc		= null;
     String	kbList		= "";
-    //JSONObject	json		= null;
+    JSONObject	json		= null;
     int		kbIndex		= 0;
     String	url		= getUrlPrefix() + "/kbList?keywords=base";
 
     System.out.print(url + " => ");
     System.out.flush();
 
-     // YOUR CODE HERE
+    // YOUR CODE HERE
     // try {
     //   doc = Jsoup.connect(url).ignoreContentType(true).post();
     //
@@ -110,7 +110,7 @@ class	Caller
     }
     br.close();
 
-    JSONObject json = new JSONObject(kbList);
+    json = new JSONObject(kbList);
     JSONArray data = json.getJSONArray("data");
     json = data.getJSONObject(0);
     json = json.getJSONObject("kbEntry");
@@ -134,7 +134,7 @@ class	Caller
   {
     Response	response	= null;
     String	url		= getUrlPrefix() + "/kb/" + oldKbId;
-    int		newKbId = 0; // TEMP
+    int		newKbId;
 
     System.out.print(url + " => ");
     System.out.flush();
@@ -143,18 +143,17 @@ class	Caller
     // try {
     //   response = Jsoup.connect(url).method(Method.GET).execute();
     //   url = response.url().toString();
-    //   String cookie = response.cookie("session");
+    //   setSessionCookie(response.cookie("session"));
+      File file = new File("2.txt");
+      BufferedReader br = new BufferedReader(new FileReader(file));
+      url = br.readLine();
+      br.close();
+
+      newKbId = Integer.parseInt(url.substring(33));
     // }
     // catch (java.net.SocketTimeoutException e) {
     //   System.err.println("Connection timed out.");
     // }
-
-    File file = new File("2.txt");
-    BufferedReader br = new BufferedReader(new FileReader(file));
-    url = br.readLine();
-    br.close();
-
-    newKbId = Integer.parseInt(url.substring(33));
 
     System.out.println(newKbId);
     return(newKbId);
@@ -182,6 +181,34 @@ class	Caller
     System.out.flush();
 
     //  YOUR CODE HERE
+    // try {
+    //   document = Jsoup.connect(url).cookie("session", getSessionCookie()).get();
+    //   document = Jsoup.parse(document, "UTF-8", url);
+      File file = new File("3.txt");
+      document = Jsoup.parse(file, "UTF-8", url);
+
+      tables = document.select("table");
+      Elements tr = tables.select("tr");
+      for (Element t : tr) {
+        Elements th = t.select("th");
+        Elements td = t.select("td");
+        if (th.size() == 0) {
+          for (Element d : td) {
+            System.out.print(d.text() + "     ");
+          }
+          System.out.println("");
+        }
+        else {
+          for (Element h : th) {
+            System.out.print(h.text() + ":      ");
+          }
+          System.out.println("");
+        }
+      }
+    // }
+    // catch (java.net.SocketTimeoutException e) {
+    //   System.err.println("Connection timed out.");
+    // }
 
     System.out.print("");
   }
