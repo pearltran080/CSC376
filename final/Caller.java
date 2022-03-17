@@ -95,7 +95,6 @@ class	Caller
     // YOUR CODE HERE
     // try {
     //   doc = Jsoup.connect(url).ignoreContentType(true).post();
-    //   doc = Jsoup.parse(doc, "UTF-8", url);
       File file = new File("1.txt");
       doc = Jsoup.parse(file, "UTF-8", url);
 
@@ -148,13 +147,13 @@ class	Caller
       br.close();
 
       newKbId = Integer.parseInt(url.substring(33));
+      System.out.println(newKbId);
+      return(newKbId);
     // }
     // catch (java.net.SocketTimeoutException e) {
     //   System.err.println("Connection timed out.");
     // }
-
-    System.out.println(newKbId);
-    return(newKbId);
+    // return -1;
   }
 
   //  PURPOSE:  To get the HTML text of the properties page of 'subject' from
@@ -181,7 +180,6 @@ class	Caller
     //  YOUR CODE HERE
     // try {
     //   document = Jsoup.connect(url).cookie("session", getSessionCookie()).get();
-    //   document = Jsoup.parse(document, "UTF-8", url);
       File file = new File("3.txt");
       document = Jsoup.parse(file, "UTF-8", url);
 
